@@ -66,7 +66,7 @@
        sudo apt-get update
        sudo apt-get install docker-ce docker-ce-cli containerd.io
       ```
-- [일반](http://pyrasis.com/book/DockerForTheReallyImpatient/Chapter02)
+
 - [centos](http://www.kwangsiklee.com/2017/07/centos%EC%97%90%EC%84%9C-docker-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0/)
 
 ### 주요 명령어들
@@ -97,11 +97,8 @@ docker images
   - d 옵션으로 백그라운드 실행 가능하다.
     - 백그라운드로 실행하지 않으면 컨테이너 안에서 foreground로 실행되고 있는 프로세스의 출력화면이 보인다
       - 컨테이너 내부에 foreground로 실행되는 프로세스가 없다면 
-        바로 exit되는 것 같다 (매우 중요!!!!, 이것 때문에 몇시간 날려묵음 ..)
-      - [flask, gunicorn, supervisor](https://github.com/Leafney/docker-flask/blob/master/py3/app/conf/supervisor_flask.ini)
+        바로 exit된다
   - [run 옵션](http://pyrasis.com/book/DockerForTheReallyImpatient/Chapter20/28)
-  - [run 읽을거리](https://bestna.wordpress.com/2014/11/10/docker-container-run-%EC%9D%B4%EC%95%BC%EA%B8%B0/)
-  - [run cpu 및 mem 제한하기](https://docs.docker.com/config/containers/resource_constraints/#configure-the-default-cfs-scheduler)
     ```
     docker run --name hello --cpus="4" -d -P myappImage:test
     ```
@@ -181,13 +178,7 @@ docker diff <컨테이너 이름>
 docker inspect node-nginx
 ```
 
-## Dockerfile 작성 및 Build 방법
-- [Bash 사용법](https://github.com/AI-Trolls/docker-tutorial/tree/master/bash_tutorial) -> 그냥 몰라도 된다!!!! 알필요 거의 없음
-- [Dockfile 작성 후 build 하는 방법](https://github.com/AI-Trolls/docker-tutorial/tree/master/docker-file-tutorial)
-- 등등
-
 ## docker-compose로 여러 컨테이너 관리하기
-  - [공식문서-회사에서안들가짐](docs.docker.com/compose/compose-file/#context)
   - docker-compose.yml을 정의하고 아래의 명령어로 명시된 컨테이너를 한방에 키고 끌 수 있는 기능!!
     ```
     docker-compose up -d
@@ -222,54 +213,3 @@ docker inspect node-nginx
     - 이후에 docker-compose up --scale worker=3 -d 명령을 통해 proxy 컨테이너를 3대 띄우고
     - 모두 한방에 종료하는 방법은 docker-compose down
     - 매우 간편하다
-    - http://jaynewho.com/post/21 이거 좋은 자료인거같은데 추가로 읽어보기
-  - [tour of docker-compose](https://medium.freecodecamp.org/the-ups-and-downs-of-docker-compose-how-to-run-multi-container-applications-bf7a8e33017e)
-  - [매우 간단한 사용법 및 예제](https://pages.wiserain.com/articles/cheatsheet-docker-compose/)
-  - [기초 사용법](http://seulcode.tistory.com/238)
-  - [약간 디테일한 참고자료](http://raccoonyy.github.io/docker-usages-for-dev-environment-setup/)
-  - [mongodb/nginx/redis 예시](https://gompro.postype.com/post/1735800)
-  - [nginx/wordpress 예시](https://blog.osg.kr/archives/186)
-  - [디팬던시 제어1](https://8thlight.com/blog/dariusz-pasciak/2016/10/17/docker-compose-wait-for-dependencies.html)
-  - [디팬던시 제어2](https://jupiny.com/2016/11/13/conrtrol-container-startup-order-in-compose/)
-  - [시스템 부팅 시 켜기](https://stackoverflow.com/questions/43671482/how-to-run-docker-compose-up-d-at-system-start-up/46529084)
-
-
-## **docker swarm**으로 여러 컨테이너 유연하게 관리하기
-- swarm에 대해 정리한 블로그
-  - https://www.sauru.so/blog/run-a-service-on-docker-swarm/
-  - https://hidekuma.github.io/docker/swarm/docker-swarm/
-  - https://subicura.com/2017/02/25/container-orchestration-with-docker-swarm.html#%EC%84%9C%EB%B2%84-%EC%98%A4%EC%BC%80%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4%EC%85%98-server-orchestration
-- 도커 로깅에 대해...
-  - https://www.freecodecamp.org/news/how-to-setup-log-rotation-for-a-docker-container-a508093912b2/
-  - 디폴트 위치는 /var/lib/docker/containers/[container-id]/[container-id]-json.log
-  - https://medium.com/@yoanis_gil/logging-with-docker-part-1-1-965cb5e17165
-  - https://medium.com/@yoanis_gil/logging-with-docker-part-1-b23ef1443aac
-
-## 가능한 것들
-- 개인 Docker Hub 쉽게 구축 가능 (docker registry server)
-- Docker 컨테이너 끼리 연결 가능 (link 옵션)
-  - link 옵션은 deprecated 될 예정이고
-  - [network 생성 기능](http://pyrasis.com/book/DockerForTheReallyImpatient/Chapter06/02)을 써보기
-- 다른 서버의 컨테이너로도 연결 가능 (Ambassador container 이용)
-- 호스트의 디스크 공간 공유 가능 (v 옵션)
-- 컨테이너의 자원(CPU, MEM) 제한 가능 ([참고](https://www.serverlab.ca/tutorials/containers/docker/how-to-limit-memory-and-cpu-for-docker-containers/))
-- Docker 모니터링 가능 (Graphite)
-
-
-## 추가 참고자료
-- node 배포, https://seokjun.kim/docker-nginx-node/
-- Docker Images 저장 경로 변경
-  ```
-  # /usr/lib/systemd/system/docker.service
-  ~~~~ 생략
-  ExceStart=/user/bin/docker -g /새로운경로
-  ~~~~ 생략
-  ```
-  - 수정한 다음, sudo systemctl restart docker를 때려준다.
-  - 참고
-    - http://kisow.github.io/blog/2015/10/28/docker-image-gyeongro-byeongyeonghagi/
-    - https://sanenthusiast.com/change-default-image-container-location-docker/
-- nginx 띄우기, http://blog.woniper.net/313
-  - docker blog https://blog.docker.com/2015/04/tips-for-deploying-nginx-official-image-with-docker/
-  - docker 공홈 nginx dockerfile https://docs.docker.com/samples/library/nginx/#hosting-some-simple-static-content
-- haproxy https://seokjun.kim/haproxy-and-nginx-load-balancing/
